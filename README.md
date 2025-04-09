@@ -1,4 +1,4 @@
-# PPS Register
+# Personal Property Securities Register
 
 [![Tests](https://github.com/samofwise/pps-register/actions/workflows/tests-pipeline.yml/badge.svg)](https://github.com/samofwise/pps-register/actions/workflows/tests-pipeline.yml)
 
@@ -28,7 +28,7 @@ A .NET Aspire and React application for managing Personal Property Security regi
    code pps-register.code-workspace
    ```
 
-3. Start the Project with f5 or via cli:
+3. Start the project via the cli or f5:
 
    ```bash
    dotnet run --project pps-register-api/PPSRegister.AppHost/PPSRegister.AppHost.csproj
@@ -59,10 +59,16 @@ Here is an outline of the basic features implemented in the react app:
 
 ### Domain design
 
+- For the domain design I selected a simple representation of two main entities. `PersonalPropertySecurities` and `PersonalPropertySecurityUploads`.
+- This was to keep the domain design simple and only focus on the necessary entities to allow for time to be focused around building out the microservices architecture
+- `PersonalPropertySecurityUploads` tracks all file uploads per client, using stored filenames to prevent duplicate submissions. Also it provides a denormalized summary of the processing results
+- `PersonalPropertySecurities` stores all of the unique personal property securities per client in the registry.
+- Also I do admit the names are too similar and may easily lead to confusion
+
 ### Scaleability
 
 - I implemented a microservices architecture using .NET Aspire to enable independent scaling and load balancing of services
-- I separated the PPSUpload Worker into its own microservice to handle resource-intensive file processing independently
+- I specifically separated the PPSUpload Worker into its own microservice to handle resource-intensive file processing independently
 - I integrated AWS SQS to ensure reliable file processing during high load
 - I configured health checks to quickly detect and respond to service issues
 - I utilized React Query to provide instant feedback and reduce server load
@@ -71,7 +77,7 @@ Here is an outline of the basic features implemented in the react app:
 
 ### Memory footprint
 
-- I utlised Streams and StreamReaders to avoid loading entire files into memory
+- I utilized Streams and StreamReaders to avoid loading entire files into memory
 - I implemented batch processing in the SQS worker to improve throughput
 - I implemented early validation to prevent unnecessary processing of invalid files, reducing memory usage and improving performance
 
@@ -88,7 +94,7 @@ Here is an outline of the basic features implemented in the react app:
 - Implemented record-level idempotency by checking for existing records based on unique combinations of GrantorFirstName, GrantorLastName, VIN, and SpgAcn
 - Added comprehensive unit tests to verify idempotent behavior across all operations
 
-### Containerisation
+### Containerization
 
 - Implemented containerization using .NET Aspire for service orchestration and management
 - Containerized core services including API, PPS Uploader, Frontend, and SQL Server with persistent storage
@@ -116,3 +122,13 @@ The project uses GitHub Actions for continuous integration. The workflow:
 - Runs on every pull request to main
 - Executes all tests using TestContainers
 - Requires Docker to be available in the CI environment
+
+## Future Improvements
+
+- Deploy this fully on AWS and link the demo
+  - Utilize terraform in the AWS deployment
+  - Trigger this via CI/CD
+- Use AWS LocalStack for local development
+- Double check the foreign key relationships to client (I think it isn't working correctly)
+- Possibly implement a FK relationship between `PersonalPropertySecurities` and `PersonalPropertySecurityUploads`
+- Implement EF Migrations
