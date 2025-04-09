@@ -43,7 +43,7 @@
             "DOTNET_DASHBOARD_OTLP_HTTP_ENDPOINT_URL": "https://localhost:18891",
             "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:18892",
             "DOTNET_SERVICE_DISCOVERY_ENDPOINT_URL": "https://localhost:18893",
-            "DOTNET_SERVICE_DISCOVERY_HTTP_ENDPOINT_URL": "https://localhost:18894",
+            "DOTNET_SERVICE_DISCOVERY_HTTP_ENDPOINT_URL": "https://localhost:18894"
           },
           "console": "internalConsole",
           "noDebug": true

@@ -27,31 +27,10 @@ A .NET application for managing Personal Property Security registrations.
 3. Start the Project with f5 or via cli:
 
    ```bash
-   dotnet build
+   dotnet run --project pps-register-api/PPSRegister.AppHost/PPSRegister.AppHost.csproj
    ```
 
-4. Run the tests:
-   ```bash
-   dotnet test
-   ```
 
-## Running Tests
-
-The project uses TestContainers for database testing. Make sure Docker Desktop is running before executing tests.
-
-### Database Tests
-
-The database tests use SQL Server 2022 running in a Docker container. The container is automatically:
-
-- Started before tests run
-- Configured with the necessary schema
-- Cleaned up after tests complete
-
-### Test Configuration
-
-- SQL Server password: `Str0ngP@ssw0rd!2024#Test`
-- Database name: `PPSRegisterTest`
-- Port: Dynamically assigned by TestContainers
 
 ## CI/CD
 
@@ -74,13 +53,3 @@ pps-register/
 └── pps-register-app/           # Frontend React application
 ```
 
-## Contributing
-
-1. Create a feature branch from `main`
-2. Make your changes
-3. Run tests locally
-4. Create a pull request
-
-## License
-
-[Add your license information here]
