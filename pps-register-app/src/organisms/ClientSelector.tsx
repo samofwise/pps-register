@@ -5,10 +5,12 @@ import { Button } from '../atoms/Button';
 
 const ClientSelector = ({ className }: Props) => {
   const [selectedClient, setSelectedClient] = useState<number>(1);
-  const invalidateUploads =
-    personalPropertySecuritiesApi.useInvalidateUploads();
   const deleteAll = personalPropertySecuritiesApi.useDeleteAll();
 
+  const invalidateUploads =
+    personalPropertySecuritiesApi.useInvalidateUploads();
+  const invalidateValues =
+    personalPropertySecuritiesApi.useInvalidatePersonalPropertySecurities();
   useEffect(() => {
     const storedClient = storageService.clientId.get();
     if (storedClient) setSelectedClient(storedClient);
@@ -18,6 +20,7 @@ const ClientSelector = ({ className }: Props) => {
     if (confirm('Are you sure?')) {
       await deleteAll.mutateAsync();
       invalidateUploads();
+      invalidateValues();
     }
   };
 

@@ -4,7 +4,6 @@ using CsvHelper.Configuration.Attributes;
 
 namespace PPSRegister.Data.Models;
 
-
 public class PersonalPropertySecurity
 {
   [Key]
@@ -25,7 +24,7 @@ public class PersonalPropertySecurity
   public string GrantorLastName { get; set; } = string.Empty;
 
   [Required]
-  [StringLength(17)]
+  [StringLength(17, MinimumLength = 17)]
   [Name("VIN")]
   public string VIN { get; set; } = string.Empty;
 

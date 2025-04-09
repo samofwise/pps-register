@@ -1,22 +1,45 @@
 import CsvIcon from '../assets/csv.svg?react';
-import sampleData1 from '../assets/Sample data.csv';
-import sampleData2 from '../assets/Sample data copy.csv';
 import clsx from 'clsx';
 import { getFileName } from '../utils/fileUtils';
 
-const urls = [sampleData1, sampleData2];
+import sample1 from '../assets/sampleData/1_Sample data.csv';
+import sample2 from '../assets/sampleData/motor mystery records.csv';
+import sample3 from '../assets/sampleData/rev up registry.csv';
+import sample4 from '../assets/sampleData/spg_squad_rollcall.csv';
+import sample5 from '../assets/sampleData/the_final_vin.csv';
+import sample6 from '../assets/sampleData/vinny_the_vehicle_batch.csv';
+
+import invalidSample1 from '../assets/sampleData/Invalid Sample 1.csv';
+import invalidSample2 from '../assets/sampleData/invalid_sample_2.csv';
+
+const validUrls = [sample1, sample2, sample3, sample4, sample5, sample6];
+
+const invalidUrls = [invalidSample1, invalidSample2];
 
 const SampleDataFiles = ({ className }: { className: string }) => {
   return (
-    <section className={`flex gap-2 ${className}`}>
-      {urls.map((url, i) => (
-        <SampleDataFile key={i} url={url} />
-      ))}
-    </section>
+    <>
+      <section className={clsx('flex gap-2 overflow-x-auto', className)}>
+        {validUrls.map((url, i) => (
+          <SampleDataFile key={i} url={url} />
+        ))}
+      </section>
+      <section className={clsx('flex gap-2 overflow-x-auto', className)}>
+        {invalidUrls.map((url, i) => (
+          <SampleDataFile key={i} url={url} isInvalid />
+        ))}
+      </section>
+    </>
   );
 };
 
-const SampleDataFile = ({ url }: { url: string }) => {
+const SampleDataFile = ({
+  url,
+  isInvalid = false,
+}: {
+  url: string;
+  isInvalid?: boolean;
+}) => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('text/plain', url);
   };
@@ -31,11 +54,11 @@ const SampleDataFile = ({ url }: { url: string }) => {
         'flex flex-col items-center gap-2 p-2 rounded-2xl text-center',
         'hover:bg-primary-50',
         'cursor-grab',
-        'overflow-x-auto'
+        ''
       )}
     >
-      <CsvIcon className="w-15" />
-      <p className="text-xs text-gray-500 max-w-30 flex">
+      <CsvIcon className={clsx('w-15', isInvalid && 'text-red-500')} />
+      <p className="text-xs text-gray-500 flex">
         <span className="truncate">{name}</span>
         <span className="">{extension}</span>
       </p>
@@ -44,7 +67,7 @@ const SampleDataFile = ({ url }: { url: string }) => {
 };
 
 const getFileNameParts = (fileName: string) => {
-  const [name, extension] = fileName.split('.');
+  const [name, extension] = fileName.split(/[.?]/);
   return { name, extension: `.${extension}` };
 };
 

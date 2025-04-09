@@ -14,17 +14,21 @@ const PersonalPropertySecurityUploader = () => {
   const invalidateUploads =
     personalPropertySecuritiesApi.useInvalidateUploads();
 
+  const invalidateValues =
+    personalPropertySecuritiesApi.useInvalidatePersonalPropertySecurities();
+
   const uploadFile = async (file: File) => {
     try {
       await mutateAsync(file);
       invalidateUploads();
+      invalidateValues();
       updateNotification({
         message: 'File uploaded successfully',
         type: 'success',
       });
     } catch (error) {
       if (error instanceof AxiosError) {
-        const message = error.response?.data ?? 'An error occurred';
+        const message = getErrorMessage(error);
         updateNotification({
           message,
           type: 'error',
@@ -63,3 +67,13 @@ const PersonalPropertySecurityUploader = () => {
 };
 
 export default PersonalPropertySecurityUploader;
+
+const getErrorMessage = (error: AxiosError): string => {
+  if (error.response?.status === 500) {
+    return 'An error occurred while processing the file. Please try again.';
+  }
+  return (
+    (error.response?.data as string) ??
+    'An error occurred while processing the file. Please try again.'
+  );
+};

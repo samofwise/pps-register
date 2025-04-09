@@ -31,7 +31,7 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
     using var reader = new StringReader(uploadMessage.Data);
     using var csv = new CsvReader(reader, config);
 
-    var records = csv.GetRecords<PersonalPropertySecurity>().ToList();
+    var records = csv.GetRecords<PersonalPropertySecurityRecord>().ToList();
 
     var uploadRecord = context.PersonalPropertySecurityUploads.FirstOrDefault(u => u.FileName == uploadMessage.FileName && u.ClientId == uploadMessage.ClientId) ?? throw new InvalidOperationException("Upload record not found");
 
@@ -46,17 +46,18 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
 
     foreach (var record in records)
     {
-      record.ClientId = uploadMessage.ClientId;
-      await ProcessRecord(record, uploadRecord, context);
+      var personalPropertySecurity = MapRecord(record);
+      personalPropertySecurity.ClientId = uploadMessage.ClientId;
+      await ProcessRecord(personalPropertySecurity, uploadRecord, context);
     }
   }
 
-  private async Task ProcessRecord(PersonalPropertySecurity record, PersonalPropertySecurityUpload uploadRecord, PPSRegisterDbContext context)
+  private async Task ProcessRecord(PersonalPropertySecurity newPPS, PersonalPropertySecurityUpload uploadRecord, PPSRegisterDbContext context)
   {
-    var (isValid, validationResults) = ValidateRecord(record);
+    var (isValid, validationResults) = ValidateRecord(newPPS);
     if (!isValid)
     {
-      _logger.LogWarning("Invalid record: {Record} with validation errors: {ValidationResults}", record, GetValidationErrors(validationResults));
+      _logger.LogWarning("Invalid record: {Record} with validation errors: {ValidationResults}", newPPS, GetValidationErrors(validationResults));
       uploadRecord.Invalid++;
     }
     else
@@ -64,33 +65,50 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
       uploadRecord.Processed++;
 
       var existingRecord = context.PersonalPropertySecurities.FirstOrDefault(r =>
-        r.GrantorFirstName == record.GrantorFirstName &&
-        r.GrantorLastName == record.GrantorLastName &&
-        r.VIN == record.VIN &&
-        r.SpgAcn == record.SpgAcn &&
-        r.SpgOrganizationName == record.SpgOrganizationName &&
-        r.ClientId == record.ClientId
+        r.GrantorFirstName == newPPS.GrantorFirstName &&
+        r.GrantorLastName == newPPS.GrantorLastName &&
+        r.VIN == newPPS.VIN &&
+        r.SpgAcn == newPPS.SpgAcn &&
+        r.SpgOrganizationName == newPPS.SpgOrganizationName &&
+        r.ClientId == newPPS.ClientId
       );
 
       if (existingRecord != null)
       {
         //Skipping GrantorFirstName, GrantorLastName, VIN, SpgAcn, SpgOrganizationName
-        existingRecord.GrantorMiddleNames = record.GrantorMiddleNames;
-        existingRecord.RegistrationDuration = record.RegistrationDuration;
-        existingRecord.RegistrationStartDate = record.RegistrationStartDate;
-        existingRecord.SpgOrganizationName = record.SpgOrganizationName;
+        existingRecord.GrantorMiddleNames = newPPS.GrantorMiddleNames;
+        existingRecord.RegistrationDuration = newPPS.RegistrationDuration;
+        existingRecord.RegistrationStartDate = newPPS.RegistrationStartDate;
+        existingRecord.SpgOrganizationName = newPPS.SpgOrganizationName;
         uploadRecord.Updated++;
         context.PersonalPropertySecurities.Update(existingRecord);
       }
       else
       {
-        context.PersonalPropertySecurities.Add(record);
+        context.PersonalPropertySecurities.Add(newPPS);
         uploadRecord.Added++;
       }
     }
 
     context.PersonalPropertySecurityUploads.Update(uploadRecord);
     await context.SaveChangesAsync();
+  }
+
+  private static PersonalPropertySecurity MapRecord(PersonalPropertySecurityRecord record)
+  {
+    return new PersonalPropertySecurity
+    {
+      GrantorFirstName = record.GrantorFirstName!,
+      GrantorMiddleNames = record.GrantorMiddleNames,
+      GrantorLastName = record.GrantorLastName!,
+      VIN = record.VIN!,
+      SpgAcn = record.SpgAcn!,
+      SpgOrganizationName = record.SpgOrganizationName!,
+
+      RegistrationStartDate = DateTime.TryParse(record.RegistrationStartDate, out var registrationStartDate) ? registrationStartDate : default,
+
+      RegistrationDuration = record.RegistrationDuration!,
+    };
   }
 
   private static (bool isValid, List<ValidationResult> validationResults) ValidateRecord(PersonalPropertySecurity record)
@@ -100,7 +118,20 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
 
     var result = Validator.TryValidateObject(record, validationContext, validationResults, true);
 
+    var registrationDurationResult = IsValidRegistrationDuration(record);
+
+    result = result && registrationDurationResult.isValid;
+    validationResults.AddRange(registrationDurationResult.validationResults);
+
     return (result, validationResults);
+  }
+
+  private static readonly string[] validRegistrationDurations = ["7", "25", "N/A"];
+  private static (bool isValid, List<ValidationResult> validationResults) IsValidRegistrationDuration(PersonalPropertySecurity record)
+  {
+    return validRegistrationDurations.Contains(record.RegistrationDuration) ?
+      (true, []) :
+      (false, [new ValidationResult("Registration duration is invalid")]);
   }
 
   private static string GetValidationErrors(List<ValidationResult> validationResults) => string.Join(", ", validationResults.Select(r => r.ToString()));
