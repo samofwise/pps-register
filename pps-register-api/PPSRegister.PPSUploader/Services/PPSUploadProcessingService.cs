@@ -8,7 +8,7 @@ public interface IPPSUploadProcessingService
   Task ProcessUpload(PPSUploadMessage? uploadMessage);
 }
 
-public class PPSUploadProcessingService(PPSRegisterDbContext _context, ILogger<PPSUploadProcessingService> _logger) : IPPSUploadProcessingService
+public class PPSUploadProcessingService(PPSRegisterDbContext _context) : IPPSUploadProcessingService
 {
   public Task ProcessUpload(PPSUploadMessage? uploadMessage)
   {

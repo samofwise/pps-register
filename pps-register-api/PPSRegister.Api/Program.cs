@@ -22,12 +22,10 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
-builder.AddSqlServerClient(connectionName: "PPSRegister");
-
-// builder.Services.AddDbContext<PPSRegisterDbContext>(options =>
-//     options.UseInMemoryDatabase("VehicleRegistrationDb")
-//     .UseAsyncSeeding(DatabaseSeeder.Seed)
-//     );
+builder.AddSqlServerDbContext<PPSRegisterDbContext>(connectionName: "PPSRegister", configureDbContextOptions: options =>
+{
+    // options.UseAsyncSeeding(DatabaseSeeder.Seed);
+});
 
 // Add AWS SQS services
 builder.Services.AddAWSService<IAmazonSQS>();
@@ -54,6 +52,10 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<PPSRegisterDbContext>();
+await context.Database.EnsureCreatedAsync();
 
 app.UseHttpsRedirection();
 

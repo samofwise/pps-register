@@ -1,4 +1,5 @@
 using Amazon.SQS;
+using PPSRegister.Data;
 using PPSRegister.PPSUploader.Services;
 using PPSRegister.PPSUploader.Workers;
 
@@ -9,6 +10,7 @@ builder.Services.AddScoped<IPPSUploadProcessingService, PPSUploadProcessingServi
 
 builder.Services.AddHostedService<PPSUploadWorker>();
 
+builder.AddSqlServerDbContext<PPSRegisterDbContext>(connectionName: "PPSRegister");
 
 var host = builder.Build();
 host.Run();
