@@ -1,4 +1,6 @@
-# Personal Property Securities Register
+# [Personal Property Securities Register](https://github.com/samofwise/pps-register)
+
+https://github.com/samofwise/pps-register
 
 [![Tests](https://github.com/samofwise/pps-register/actions/workflows/tests-pipeline.yml/badge.svg)](https://github.com/samofwise/pps-register/actions/workflows/tests-pipeline.yml)
 
