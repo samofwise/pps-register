@@ -1,4 +1,4 @@
-@PPSRegister.Api_HostAddress = https://localhost:4000
+@PPSRegister.Api_HostAddress = http://localhost:9998
 
 GET {{PPSRegister.Api_HostAddress}}/weatherforecast/
 Accept: application/json

@@ -8,13 +8,14 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "build",
+        "label": "build-aspire",
         "command": "dotnet",
         "type": "process",
         "args": [
           "build",
-          "${workspaceFolder}/pps-register-api/VehicleRegistrationApi.csproj"
-        ]
+          "${workspaceFolder}/pps-register-api/PPSRegister.AppHost/PPSRegister.AppHost.csproj"
+        ],
+        "problemMatcher": "$msCompile"
       }
     ]
   },
@@ -23,11 +24,11 @@
       "version": "0.2.0",
       "configurations": [
         {
-          "name": "Cursor .Net Debugging",
+          "name": "Aspire Debug",
           "type": "coreclr",
           "request": "launch",
-          "preLaunchTask": "build",
-          "program": "${workspaceFolder}/pps-register-api/bin/Debug/net9.0/VehicleRegistrationApi.dll",
+          "preLaunchTask": "build-aspire",
+          "program": "${workspaceFolder}/pps-register-api/PPSRegister.AppHost/bin/Debug/net9.0/PPSRegister.AppHost.dll",
           "args": [],
           "cwd": "${workspaceFolder}/pps-register-api",
           "stopAtEntry": false,
@@ -42,6 +43,9 @@
             "debuggerPath": "${workspaceFolder}/pps-register-api/.tools/netcoredbg/osx-arm64/netcoredbg",
             "debuggerArgs": ["--interpreter=vscode"],
             "quoteArgs": true
+          },
+          "env": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
           },
           "console": "internalConsole"
         }

@@ -2,12 +2,17 @@ using System.Text.Json;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using PPSRegister.Data.Models;
+using PPSRegister.PPSUploader.Services;
 
 namespace PPSRegister.PPSUploader.Workers;
 
-public class PPSUploadWorker(IAmazonSQS _sqsClient, IConfiguration _configuration, ILogger<PPSUploadWorker> _logger) : BackgroundService
+public class PPSUploadWorker(
+    IAmazonSQS _sqsClient,
+    IConfiguration _configuration,
+    ILogger<PPSUploadWorker> _logger,
+    IPPSUploadProcessingService _ppsUploadProcessingService) : BackgroundService
 {
-    private readonly string _queueUrl = _configuration.GetValue<string>("AWS:SQS:QueueUrl") ?? "";
+    private readonly string _queueUrl = _configuration.GetValue<string>("AWS:SQS:QueueUrl") ?? throw new Exception("AWS:SQS:QueueUrl is not set");
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -34,7 +39,7 @@ public class PPSUploadWorker(IAmazonSQS _sqsClient, IConfiguration _configuratio
 
                         var uploadMessage = JsonSerializer.Deserialize<PPSUploadMessage>(message.Body);
 
-                        // await _ppsUploadProcessingService.ProcessUpload(uploadMessage);
+                        await _ppsUploadProcessingService.ProcessUpload(uploadMessage);
 
                         // After successful processing, delete the message
                         await _sqsClient.DeleteMessageAsync(_queueUrl, message.ReceiptHandle, stoppingToken);

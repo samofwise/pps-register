@@ -23,14 +23,17 @@ var api = builder.AddProject<Projects.PPSRegister_Api>("api")
     .WithReference(db)
     .WaitFor(db)
     .WithReference(uploader)
+    .WithHttpsEndpoint(name: "api", port: 4001)
     .WithEnvironment("AWS__Region", awsRegion)
     .WithEnvironment("AWS__SQS__QueueUrl", queueUrl);
 
-// builder.AddNpmApp("reactvite", "../AspireJavaScript.Vite")
-//   .WithReference(api)
-//   .WithEnvironment("BROWSER", "none")
-//   .WithHttpEndpoint(env: "VITE_PORT")
-//   .WithExternalHttpEndpoints()
-//   .PublishAsDockerFile();
+builder.AddNpmApp("vite", "../../pps-register-app", "start")
+  .WithReference(api)
+  .WaitFor(api)
+  .WithEnvironment("BROWSER", "none")
+  .WithEnvironment("VITE_API_URL", api.GetEndpoint("api"))
+  .WithHttpEndpoint(port: 3500, env: "VITE_PORT")
+  .WithExternalHttpEndpoints()
+  .PublishAsDockerFile();
 
 builder.Build().Run();

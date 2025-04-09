@@ -1,3 +1,5 @@
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
 using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using PPSRegister.Api.Services;
@@ -22,23 +24,25 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
-builder.AddSqlServerDbContext<PPSRegisterDbContext>(connectionName: "PPSRegister", configureDbContextOptions: options =>
+builder.Services.AddDbContext<PPSRegisterDbContext>(options =>
 {
-    // options.UseAsyncSeeding(DatabaseSeeder.Seed);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PPSRegister"));
+    options.UseAsyncSeeding(DatabaseSeeder.Seed);
 });
 
-// Add AWS SQS services
-builder.Services.AddAWSService<IAmazonSQS>();
+// builder.AddSqlServerDbContext<PPSRegisterDbContext>(connectionName: "PPSRegister", configureDbContextOptions: options =>
+// {
+//     options.UseAsyncSeeding(DatabaseSeeder.Seed);
+// });
+
+builder.Services.AddAWSService<IAmazonSQS>(new AWSOptions
+{
+    Profile = "development-user",
+    Region = RegionEndpoint.APSoutheast2
+});
 
 builder.Services.AddScoped<IPersonalPropertySecurityUploadService, PersonalPropertySecurityUploadService>();
 
-// Register HTTP client for calling PPSUploader (set by Aspire via env var)
-builder.Services.AddHttpClient("PpsUploader", (sp, client) =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    var baseUrl = config["service:PpsUploader:url"]; // Aspire injects this!
-    client.BaseAddress = new Uri(baseUrl!);
-});
 
 var app = builder.Build();
 
@@ -53,11 +57,17 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors(builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+
 using var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<PPSRegisterDbContext>();
 await context.Database.EnsureCreatedAsync();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -18,7 +18,7 @@ public class PersonalPropertySecurityUploadService(
   IAmazonSQS sqsClient,
   IConfiguration configuration) : IPersonalPropertySecurityUploadService
 {
-  private readonly string _queueUrl = configuration.GetValue<string>("AWS__SQS__QueueUrl")
+  private readonly string _queueUrl = configuration.GetValue<string>("AWS:SQS:QueueUrl")
     ?? throw new ArgumentNullException("AWS:SQS:QueueUrl not configured");
 
   public async Task<List<PersonalPropertySecurityUpload>> GetUploads(int clientId)
