@@ -14,7 +14,7 @@ public interface IPersonalPropertySecurityUploadService
 }
 
 public class PersonalPropertySecurityUploadService(
-  PPSRegisterDbContext context,
+  PPSRegisterDbContext _context,
   IAmazonSQS sqsClient,
   IConfiguration configuration) : IPersonalPropertySecurityUploadService
 {
@@ -23,7 +23,7 @@ public class PersonalPropertySecurityUploadService(
 
   public async Task<List<PersonalPropertySecurityUpload>> GetUploads(int clientId)
   {
-    return await context.PersonalPropertySecurityUploads
+    return await _context.PersonalPropertySecurityUploads
         .Where(u => u.ClientId == clientId)
         .ToListAsync();
   }
@@ -39,14 +39,17 @@ public class PersonalPropertySecurityUploadService(
     if (!file.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
       throw new InvalidOperationException("File must be a CSV file");
 
+    if (_context.PersonalPropertySecurityUploads.Any(u => u.FileName == file.FileName))
+      throw new InvalidOperationException("File has already been uploaded");
+
     var upload = new PersonalPropertySecurityUpload
     {
       FileName = file.FileName,
       ClientId = clientId
     };
 
-    context.PersonalPropertySecurityUploads.Add(upload);
-    await context.SaveChangesAsync();
+    _context.PersonalPropertySecurityUploads.Add(upload);
+    await _context.SaveChangesAsync();
 
     var request = await CreateSendMessageRequest(file, clientId);
     await sqsClient.SendMessageAsync(request);

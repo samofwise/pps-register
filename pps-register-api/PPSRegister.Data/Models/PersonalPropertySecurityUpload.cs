@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace PPSRegister.Data.Models;
+
+[Index(nameof(FileName), nameof(ClientId), IsUnique = true, Name = "IX_PersonalPropertySecurityUpload_FileName_ClientId")]
 public class PersonalPropertySecurityUpload
 {
     [Key]
@@ -13,6 +16,7 @@ public class PersonalPropertySecurityUpload
     public int? Updated { get; set; }
     public int? Added { get; set; }
 
+    [Required]
     [ForeignKey(nameof(Client))]
     public int ClientId { get; set; }
     public Client Client { get; set; } = null!;

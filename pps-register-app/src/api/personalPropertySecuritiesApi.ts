@@ -22,6 +22,9 @@ const personalPropertySecuritiesApi = {
     mutationFn: uploadFile,
   }),
 
+  useDeleteAll: () => useMutation({
+    mutationFn: deleteAll,
+  }),
 };
 
 const getUploads = async () => {
@@ -33,11 +36,16 @@ const getUploads = async () => {
 const uploadFile = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
-  const response = await api.post('/personal-property-securities/upload', formData, {
+  const response = await api.post('/personal-property-securities', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
+  return response.data;
+};
+
+const deleteAll = async () => {
+  const response = await api.delete('/personal-property-securities');
   return response.data;
 };
 

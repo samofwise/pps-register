@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PPSRegister.Data.Models;
 
@@ -38,4 +39,9 @@ public class PersonalPropertySecurity
   public string SpgOrganizationName { get; set; } = string.Empty;
 
   public DateTime DateRegistered { get; set; } = DateTime.Now;
+
+  [Required]
+  [ForeignKey(nameof(Client))]
+  public int ClientId { get; set; }
+  public Client Client { get; set; } = null!;
 }

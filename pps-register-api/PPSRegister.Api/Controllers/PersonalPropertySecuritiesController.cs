@@ -7,21 +7,19 @@ namespace PPSRegister.Api.Controllers;
 [ApiController]
 [Route("personal-property-securities")]
 public class PersonalPropertySecuritiesController(
+    IPersonalPropertySecurityService _personalPropertySecurityService,
     IPersonalPropertySecurityUploadService _personalPropertySecurityUploadService
 ) : BaseController
 {
-
-    
-    [HttpGet("uploads")]
-    [ProducesResponseType(typeof(List<PersonalPropertySecurityUpload>), StatusCodes.Status200OK)]
+    [HttpGet("")]
+    [ProducesResponseType(typeof(List<PersonalPropertySecurity>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Get()
     {
-        var uploads = await _personalPropertySecurityUploadService.GetUploads(ClientId);
-
-        return Ok(uploads);
+        var personalPropertySecurities = await _personalPropertySecurityService.GetPersonalPropertySecurities(ClientId);
+        return Ok(personalPropertySecurities);
     }
-
 
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -38,5 +36,24 @@ public class PersonalPropertySecuritiesController(
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    [HttpDelete("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> DeleteAll()
+    {
+        await _personalPropertySecurityService.DeleteAll(ClientId);
+        return Ok();
+    }
+
+    [HttpGet("uploads")]
+    [ProducesResponseType(typeof(List<PersonalPropertySecurityUpload>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetUploads()
+    {
+        var uploads = await _personalPropertySecurityUploadService.GetUploads(ClientId);
+
+        return Ok(uploads);
     }
 }

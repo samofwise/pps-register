@@ -9,8 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-
-// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -36,6 +34,7 @@ builder.Services.AddAWSService<IAmazonSQS>(new AWSOptions
     Region = RegionEndpoint.APSoutheast2
 });
 
+builder.Services.AddScoped<IPersonalPropertySecurityService, PersonalPropertySecurityService>();
 builder.Services.AddScoped<IPersonalPropertySecurityUploadService, PersonalPropertySecurityUploadService>();
 
 
