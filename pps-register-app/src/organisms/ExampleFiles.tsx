@@ -4,7 +4,7 @@ import { getFileName } from '../utils/fileUtils';
 
 import sample1 from '../assets/sampleData/1_Sample data.csv';
 import sample2 from '../assets/sampleData/motor mystery records.csv';
-import sample3 from '../assets/sampleData/rev up registry.csv';
+import sample3 from '../assets/sampleData/mmr UPDATED.csv';
 import sample4 from '../assets/sampleData/spg_squad_rollcall.csv';
 import sample5 from '../assets/sampleData/the_final_vin.csv';
 import sample6 from '../assets/sampleData/vinny_the_vehicle_batch.csv';

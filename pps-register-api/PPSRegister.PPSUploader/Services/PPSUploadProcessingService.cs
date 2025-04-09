@@ -119,13 +119,21 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
     var result = Validator.TryValidateObject(record, validationContext, validationResults, true);
 
     var registrationDurationResult = IsValidRegistrationDuration(record);
+    var startDateResult = IsValidStartDate(record);
 
-    result = result && registrationDurationResult.isValid;
+    result = result && registrationDurationResult.isValid && startDateResult.isValid;
     validationResults.AddRange(registrationDurationResult.validationResults);
-
+    validationResults.AddRange(startDateResult.validationResults);
     return (result, validationResults);
   }
 
+
+  private static (bool isValid, List<ValidationResult> validationResults) IsValidStartDate(PersonalPropertySecurity record)
+  {
+    return record.RegistrationStartDate > DateTime.MinValue ?
+      (true, []) :
+      (false, [new ValidationResult("Registration start date is invalid")]);
+  }
   private static readonly string[] validRegistrationDurations = ["7", "25", "N/A"];
   private static (bool isValid, List<ValidationResult> validationResults) IsValidRegistrationDuration(PersonalPropertySecurity record)
   {
