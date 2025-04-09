@@ -4,7 +4,7 @@ type PersonalPropertySecurity = {
   grantorMiddleNames?: string;
   grantorLastName: string;
   vin: string;
-  registrationStartDate: Date;
+  registrationStartDate: string;
   registrationDuration: string;
   spgAcn: string;
   spgOrganizationName: string;
