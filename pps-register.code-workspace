@@ -24,7 +24,7 @@
       "version": "0.2.0",
       "configurations": [
         {
-          "name": "Aspire Debug",
+          "name": "Aspire Run",
           "type": "coreclr",
           "request": "launch",
           "preLaunchTask": "build-aspire",
@@ -36,18 +36,17 @@
             "action": "openExternally",
             "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
           },
-          // "pipeTransport": {
-          //   "pipeCwd": "${workspaceFolder}",
-          //   "pipeProgram": "bash",
-          //   "pipeArgs": ["-c"],
-          //   "debuggerPath": "${workspaceFolder}/pps-register-api/.tools/netcoredbg/osx-arm64/netcoredbg",
-          //   "debuggerArgs": ["--interpreter=vscode"],
-          //   "quoteArgs": true
-          // },
           "env": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "ASPNETCORE_URLS": "https://localhost:17056",
+            "DOTNET_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:18890",
+            "DOTNET_DASHBOARD_OTLP_HTTP_ENDPOINT_URL": "https://localhost:18891",
+            "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:18892",
+            "DOTNET_SERVICE_DISCOVERY_ENDPOINT_URL": "https://localhost:18893",
+            "DOTNET_SERVICE_DISCOVERY_HTTP_ENDPOINT_URL": "https://localhost:18894",
           },
-          "console": "internalConsole"
+          "console": "internalConsole",
+          "noDebug": true
         }
       ]
     }

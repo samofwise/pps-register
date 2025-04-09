@@ -34,6 +34,7 @@ builder.AddNpmApp("vite", "../../pps-register-app", "start")
   .WithEnvironment("VITE_API_URL", api.GetEndpoint("api"))
   .WithHttpEndpoint(port: 3500, env: "VITE_PORT")
   .WithExternalHttpEndpoints()
-  .PublishAsDockerFile();
+  .PublishAsDockerFile()
+  .WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
 
 builder.Build().Run();

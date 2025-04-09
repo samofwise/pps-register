@@ -22,65 +22,6 @@ public static class DatabaseSeeder
         await context.SaveChangesAsync(cancellationToken);
       }
 
-      if (!context.Set<PersonalPropertySecurityUpload>().Any())
-      {
-        var uploads = new List<PersonalPropertySecurityUpload>
-        {
-          new()
-          {
-            FileName = "registrations_2024_01.csv",
-            Submitted = 150,
-            Invalid = 5,
-            Processed = 145,
-            Updated = 30,
-            Added = 115,
-            ClientId = 1
-          },
-          new()
-          {
-            FileName = "registrations_2024_02.csv",
-            ClientId = 1
-          },
-          new()
-          {
-            FileName = "registrations_2024_03.csv",
-            Submitted = 200,
-            Invalid = 8,
-            Processed = 192,
-            Updated = 45,
-            Added = 147,
-            ClientId = 1
-          },
-          new()
-          {
-            FileName = "registrations_2024_01.csv",
-            Submitted = 190,
-            Invalid = 4,
-            Processed = 186,
-            Updated = 35,
-            Added = 151,
-            ClientId = 3
-          },
-          new()
-          {
-            FileName = "registrations_2024_06.csv",
-            Submitted = 210,
-            Invalid = 7,
-            Processed = 203,
-            Updated = 40,
-            Added = 163,
-            ClientId = 3
-          },
-          new()
-          {
-            FileName = "registrations_2024_03.csv",
-            ClientId = 3
-          }
-        };
-        context.Set<PersonalPropertySecurityUpload>().AddRange(uploads);
-        await context.SaveChangesAsync(cancellationToken);
-      }
-
       return true;
     }
     catch
