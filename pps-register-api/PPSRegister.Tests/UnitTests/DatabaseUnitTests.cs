@@ -48,6 +48,9 @@ public class DatabaseUnitTests : IClassFixture<SqlServerFixture>
     var uploads = await context.PersonalPropertySecurityUploads.ToListAsync();
     Assert.Single(uploads);
     Assert.Equal("test.csv", uploads[0].FileName);
+
+
+    await CleanDatabase(context);
   }
 
 
@@ -80,11 +83,15 @@ public class DatabaseUnitTests : IClassFixture<SqlServerFixture>
       SpgOrganizationName = "Test Org 2"
     };
 
+
     await context.PersonalPropertySecurities.AddAsync(registration1);
+
     await context.SaveChangesAsync();
 
     await context.PersonalPropertySecurities.AddAsync(registration2);
     await Assert.ThrowsAsync<DbUpdateException>(async () => await context.SaveChangesAsync());
+
+    await CleanDatabase(context);
   }
 
   [Fact]
@@ -121,6 +128,8 @@ public class DatabaseUnitTests : IClassFixture<SqlServerFixture>
 
     await context.PersonalPropertySecurities.AddAsync(registration2);
     await Assert.ThrowsAsync<DbUpdateException>(async () => await context.SaveChangesAsync());
+
+    await CleanDatabase(context);
   }
 
 
@@ -143,6 +152,17 @@ public class DatabaseUnitTests : IClassFixture<SqlServerFixture>
 
     await context.PersonalPropertySecurities.AddAsync(registration);
     await Assert.ThrowsAsync<DbUpdateException>(async () => await context.SaveChangesAsync());
+
+    context.PersonalPropertySecurities.Remove(registration);
+    await CleanDatabase(context);
+  }
+
+  private static async Task CleanDatabase(PPSRegisterDbContext context)
+  {
+    context.ChangeTracker.Clear();
+    context.PersonalPropertySecurities.RemoveRange(context.PersonalPropertySecurities);
+    context.PersonalPropertySecurityUploads.RemoveRange(context.PersonalPropertySecurityUploads);
+    await context.SaveChangesAsync();
   }
 }
 

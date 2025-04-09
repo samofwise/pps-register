@@ -69,13 +69,12 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
         r.GrantorLastName == newPPS.GrantorLastName &&
         r.VIN == newPPS.VIN &&
         r.SpgAcn == newPPS.SpgAcn &&
-        r.SpgOrganizationName == newPPS.SpgOrganizationName &&
         r.ClientId == newPPS.ClientId
       );
 
       if (existingRecord != null)
       {
-        //Skipping GrantorFirstName, GrantorLastName, VIN, SpgAcn, SpgOrganizationName
+        //Skipping GrantorFirstName, GrantorLastName, VIN, SpgAcn
         existingRecord.GrantorMiddleNames = newPPS.GrantorMiddleNames;
         existingRecord.RegistrationDuration = newPPS.RegistrationDuration;
         existingRecord.RegistrationStartDate = newPPS.RegistrationStartDate;
@@ -117,29 +116,49 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
     var validationResults = new List<ValidationResult>();
 
     var result = Validator.TryValidateObject(record, validationContext, validationResults, true);
+    var validatorResults = (result, validationResults);
 
     var registrationDurationResult = IsValidRegistrationDuration(record);
     var startDateResult = IsValidStartDate(record);
+    var spgAcnResult = IsValidSpgAcn(record);
 
-    result = result && registrationDurationResult.isValid && startDateResult.isValid;
-    validationResults.AddRange(registrationDurationResult.validationResults);
-    validationResults.AddRange(startDateResult.validationResults);
-    return (result, validationResults);
+    return CombineResults([validatorResults, registrationDurationResult, startDateResult, spgAcnResult]);
   }
 
 
-  private static (bool isValid, List<ValidationResult> validationResults) IsValidStartDate(PersonalPropertySecurity record)
-  {
-    return record.RegistrationStartDate > DateTime.MinValue ?
-      (true, []) :
-      (false, [new ValidationResult("Registration start date is invalid")]);
-  }
   private static readonly string[] validRegistrationDurations = ["7", "25", "N/A"];
   private static (bool isValid, List<ValidationResult> validationResults) IsValidRegistrationDuration(PersonalPropertySecurity record)
   {
     return validRegistrationDurations.Contains(record.RegistrationDuration) ?
       (true, []) :
       (false, [new ValidationResult("Registration duration is invalid")]);
+  }
+  private static (bool isValid, List<ValidationResult> validationResults) IsValidStartDate(PersonalPropertySecurity record)
+  {
+    if (record.RegistrationStartDate <= DateTime.MinValue)
+      return (false, [new ValidationResult("Registration start date is invalid")]);
+
+    if (record.RegistrationStartDate.TimeOfDay != TimeSpan.Zero)
+      return (false, [new ValidationResult("Registration start date must not include time information")]);
+
+    return (true, []);
+  }
+
+  private static readonly string[] allowedSpaces = [" ", "-", ","];
+  private static (bool isValid, List<ValidationResult> validationResults) IsValidSpgAcn(PersonalPropertySecurity record)
+  {
+    var trimmedAcn = new string([.. record.SpgAcn.Where(c => !allowedSpaces.Contains(c.ToString()))]);
+    var digitCount = trimmedAcn.Count(char.IsDigit);
+
+    if (digitCount != 9)
+      return (false, [new ValidationResult("SPG ACN must contain exactly 9 digits")]);
+
+    return (true, []);
+  }
+
+  private static (bool isValid, List<ValidationResult> validationResults) CombineResults(List<(bool isValid, List<ValidationResult> validationResults)> results)
+  {
+    return results.Aggregate((acc, curr) => (acc.isValid && curr.isValid, acc.validationResults.Concat(curr.validationResults).ToList()));
   }
 
   private static string GetValidationErrors(List<ValidationResult> validationResults) => string.Join(", ", validationResults.Select(r => r.ToString()));
