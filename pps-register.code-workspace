@@ -36,14 +36,14 @@
             "action": "openExternally",
             "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
           },
-          "pipeTransport": {
-            "pipeCwd": "${workspaceFolder}",
-            "pipeProgram": "bash",
-            "pipeArgs": ["-c"],
-            "debuggerPath": "${workspaceFolder}/pps-register-api/.tools/netcoredbg/osx-arm64/netcoredbg",
-            "debuggerArgs": ["--interpreter=vscode"],
-            "quoteArgs": true
-          },
+          // "pipeTransport": {
+          //   "pipeCwd": "${workspaceFolder}",
+          //   "pipeProgram": "bash",
+          //   "pipeArgs": ["-c"],
+          //   "debuggerPath": "${workspaceFolder}/pps-register-api/.tools/netcoredbg/osx-arm64/netcoredbg",
+          //   "debuggerArgs": ["--interpreter=vscode"],
+          //   "quoteArgs": true
+          // },
           "env": {
             "ASPNETCORE_ENVIRONMENT": "Development"
           },

@@ -27,6 +27,7 @@ const FileUpload = ({
     accept: {
       'text/csv': ['.csv'],
     },
+    maxSize: 25 * 1024 * 1024,
     maxFiles: 1,
     multiple: false,
     disabled: isUploading,

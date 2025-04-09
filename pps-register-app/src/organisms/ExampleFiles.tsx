@@ -9,12 +9,14 @@ import sample4 from '../assets/sampleData/spg_squad_rollcall.csv';
 import sample5 from '../assets/sampleData/the_final_vin.csv';
 import sample6 from '../assets/sampleData/vinny_the_vehicle_batch.csv';
 
-import invalidSample1 from '../assets/sampleData/Invalid Sample 1.csv';
-import invalidSample2 from '../assets/sampleData/invalid_sample_2.csv';
+import invalid1 from '../assets/sampleData/Invalid Sample 1.csv';
+import invalid2 from '../assets/sampleData/invalid_sample_2.csv';
+import invalid3 from '../assets/sampleData/invalid_file.csv';
+import invalid4 from '../assets/sampleData/invalid_file2.csv';
 
 const validUrls = [sample1, sample2, sample3, sample4, sample5, sample6];
 
-const invalidUrls = [invalidSample1, invalidSample2];
+const invalidUrls = [invalid1, invalid2, invalid3, invalid4];
 
 const SampleDataFiles = ({ className }: { className: string }) => {
   return (
