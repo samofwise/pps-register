@@ -1,34 +1,51 @@
-import { useCallback } from 'react';
+import { useCallback, DragEventHandler, DragEvent, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from './Button';
 import clsx from 'clsx';
+import useIsWindowDragging from '../hooks/useIsWindowDragging';
 
-const FileUpload = ({ onFileSelected: onFileSelect }: FileUploadProps) => {
-  const onDrop = useCallback(
+const FileUpload = ({
+  onFileSelected,
+  onDrop,
+  isUploading,
+}: FileUploadProps) => {
+  const isWindowDragging = useIsWindowDragging();
+
+  const dropInDropzone = useCallback(
     (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       if (file && file.type === 'text/csv') {
-        onFileSelect(file);
+        onFileSelected?.(file);
       }
     },
-    [onFileSelect]
+    [onFileSelected]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+    onDrop: dropInDropzone,
     accept: {
       'text/csv': ['.csv'],
     },
     maxFiles: 1,
     multiple: false,
+    disabled: isUploading,
   });
+
+  const rootProps = useMemo(() => getRootProps(), [getRootProps]);
+
+  const handleDrop = (e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    onDrop?.(e);
+    rootProps.onDrop?.(e);
+  };
 
   return (
     <article
-      {...getRootProps()}
+      {...rootProps}
+      onDrop={handleDrop}
       className={clsx(
         'border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer text-primary-500',
-        isDragActive
+        isDragActive || isWindowDragging
           ? 'border-current bg-[color-mix(in_srgb,currentColor_10%,white)]'
           : 'border-gray-300',
         'hover:bg-current-50'
@@ -37,13 +54,17 @@ const FileUpload = ({ onFileSelected: onFileSelect }: FileUploadProps) => {
       <input {...getInputProps()} />
       <div className="flex flex-col gap-2 text-gray-600">
         <p className="text-lg font-medium">
-          {isDragActive
+          {isDragActive || isWindowDragging
             ? 'Drop the CSV file here'
             : 'Drag and drop your CSV file here'}
         </p>
         <p className="text-sm">or</p>
-        <Button className="self-center" variant="outline">
-          Select File
+        <Button
+          className="self-center"
+          variant="outline"
+          disabled={isUploading}
+        >
+          {isUploading ? 'Uploading...' : 'Select File'}
         </Button>
       </div>
     </article>
@@ -53,5 +74,7 @@ const FileUpload = ({ onFileSelected: onFileSelect }: FileUploadProps) => {
 export default FileUpload;
 
 interface FileUploadProps {
-  onFileSelected: (file: File) => void;
+  onFileSelected?: (file: File) => void;
+  onDrop?: DragEventHandler<HTMLElement>;
+  isUploading?: boolean;
 }

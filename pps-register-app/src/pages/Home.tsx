@@ -1,6 +1,7 @@
 import UploadsList from '../organisms/UploadsList';
-import PersonalSecurityUploader from '../organisms/PersonalSecurityUploader';
+import PersonalPropertySecurityUploader from '../organisms/PersonalPropertySecurityUploader';
 import PersonalPropertySecuritiesList from '../organisms/PersonalPropertySecuritiesList';
+import SampleDataFiles from '../organisms/ExampleFiles';
 
 const Home = () => {
   return (
@@ -13,7 +14,9 @@ const Home = () => {
         </p>
       </div>
 
-      <PersonalSecurityUploader />
+      <PersonalPropertySecurityUploader />
+
+      <SampleDataFiles className="mt-10" />
 
       <UploadsList className="mt-10" />
 

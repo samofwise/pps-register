@@ -10,5 +10,6 @@ export default defineConfig({
     port: parseInt(process.env.VITE_PORT ?? "3500"),
     strictPort: true,
     host: true
-  }
+  },
+  assetsInclude: ['**/*.csv']
 });

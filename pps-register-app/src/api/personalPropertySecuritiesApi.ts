@@ -52,11 +52,12 @@ const getPersonalPropertySecurities = async () => {
 const uploadFile = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
-  const response = await api.post('/personal-property-securities', formData, {
+  const promise = api.post('/personal-property-securities', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
+  const [response] = await Promise.all([promise, delay(300)]);
   return response.data;
 };
 
