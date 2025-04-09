@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CsvHelper.Configuration.Attributes;
+using Microsoft.EntityFrameworkCore;
 
 namespace PPSRegister.Data.Models;
 
+[Microsoft.EntityFrameworkCore.Index(nameof(VIN), IsUnique = true, Name = "IX_PersonalPropertySecurity_VIN")]
 public class PersonalPropertySecurity
 {
   [Key]

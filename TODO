@@ -3,9 +3,10 @@
 ✔ Display PersonalPropertySecurities per client @done(25-04-09 22:44)
 ✔ Figure out how to turn into microservices @done(25-04-09 22:44)
 ✔ Figure out how to dockerise @done(25-04-09 22:44)
+✔ Make the file parser work with the new data @done(25-04-09 23:46)
 
 ☐ Figure out how to use terraform to create the infrastructure
-☐ Get AI to write unit tests
+☐ write unit tests
 ☐ write github actions to deploy to aws
 ☐ check work description and make sure everything is included
 ☐ check brief and make sure everything is included
