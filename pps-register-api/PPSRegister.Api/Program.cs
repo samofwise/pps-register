@@ -30,11 +30,6 @@ builder.Services.AddDbContext<PPSRegisterDbContext>(options =>
     options.UseAsyncSeeding(DatabaseSeeder.Seed);
 });
 
-// builder.AddSqlServerDbContext<PPSRegisterDbContext>(connectionName: "PPSRegister", configureDbContextOptions: options =>
-// {
-//     options.UseAsyncSeeding(DatabaseSeeder.Seed);
-// });
-
 builder.Services.AddAWSService<IAmazonSQS>(new AWSOptions
 {
     Profile = "development-user",
