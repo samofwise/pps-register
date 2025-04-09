@@ -1,0 +1,32 @@
+name: .NET Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Setup Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Restore dependencies
+      run: dotnet restore pps-register-api/PPSRegister.Tests/PPSRegister.Tests.csproj
+
+    - name: Build
+      run: dotnet build pps-register-api/PPSRegister.Tests/PPSRegister.Tests.csproj --no-restore
+
+    - name: Test
+      run: dotnet test pps-register-api/PPSRegister.Tests/PPSRegister.Tests.csproj --no-build --verbosity normal 
