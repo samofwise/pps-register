@@ -1,0 +1,12 @@
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/PPSRegister.Data.csproj.AssemblyReference.cache
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/PPSRegister.Data.GeneratedMSBuildEditorConfig.editorconfig
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/PPSRegister.Data.AssemblyInfoInputs.cache
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/PPSRegister.Data.AssemblyInfo.cs
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/PPSRegister.Data.csproj.CoreCompileInputs.cache
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/bin/Debug/net9.0/PPSRegister.Data.deps.json
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/bin/Debug/net9.0/PPSRegister.Data.dll
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/bin/Debug/net9.0/PPSRegister.Data.pdb
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/PPSRegister.Data.dll
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/refint/PPSRegister.Data.dll
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/PPSRegister.Data.pdb
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.Data/obj/Debug/net9.0/ref/PPSRegister.Data.dll

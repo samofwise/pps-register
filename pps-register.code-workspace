@@ -1,0 +1,51 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "build",
+          "${workspaceFolder}/pps-register-api/VehicleRegistrationApi.csproj"
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "launch": {
+      "version": "0.2.0",
+      "configurations": [
+        {
+          "name": "Cursor .Net Debugging",
+          "type": "coreclr",
+          "request": "launch",
+          "preLaunchTask": "build",
+          "program": "${workspaceFolder}/pps-register-api/bin/Debug/net9.0/VehicleRegistrationApi.dll",
+          "args": [],
+          "cwd": "${workspaceFolder}/pps-register-api",
+          "stopAtEntry": false,
+          "serverReadyAction": {
+            "action": "openExternally",
+            "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+          },
+          "pipeTransport": {
+            "pipeCwd": "${workspaceFolder}",
+            "pipeProgram": "bash",
+            "pipeArgs": ["-c"],
+            "debuggerPath": "${workspaceFolder}/pps-register-api/.tools/netcoredbg/osx-arm64/netcoredbg",
+            "debuggerArgs": ["--interpreter=vscode"],
+            "quoteArgs": true
+          },
+          "console": "internalConsole"
+        }
+      ]
+    }
+  }
+}

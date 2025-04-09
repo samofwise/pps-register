@@ -1,0 +1,7 @@
+{
+  "name": "vehicle-registration",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd pps-register-app && npm start"
+  }
+}

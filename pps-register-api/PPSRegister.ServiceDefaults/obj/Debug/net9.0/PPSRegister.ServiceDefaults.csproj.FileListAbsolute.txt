@@ -1,0 +1,12 @@
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/bin/Debug/net9.0/PPSRegister.ServiceDefaults.deps.json
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/bin/Debug/net9.0/PPSRegister.ServiceDefaults.dll
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/bin/Debug/net9.0/PPSRegister.ServiceDefaults.pdb
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/PPSRegister.ServiceDefaults.csproj.AssemblyReference.cache
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/PPSRegister.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/PPSRegister.ServiceDefaults.AssemblyInfoInputs.cache
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/PPSRegister.ServiceDefaults.AssemblyInfo.cs
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/PPSRegister.ServiceDefaults.csproj.CoreCompileInputs.cache
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/PPSRegister.ServiceDefaults.dll
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/refint/PPSRegister.ServiceDefaults.dll
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/PPSRegister.ServiceDefaults.pdb
+/Users/samhenry/Documents/technical-tests/vehicle-registration/vehicle-registration-api/PPSRegister.ServiceDefaults/obj/Debug/net9.0/ref/PPSRegister.ServiceDefaults.dll

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "fILOmPYODejI2Bu7FfuxYwS2ow6QRFkqwVC7O6/7Cio=",
+  "Source": "PPSRegister.Api",
+  "BasePath": "_content/PPSRegister.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
