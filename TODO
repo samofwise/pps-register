@@ -1,8 +1,9 @@
-☐ Make File uploader work
-☐ Make file parser in Be work
-☐ Display PersonalPropertySecurities per client
-☐ Figure out how to turn into microservices
-☐ Figure out how to dockerise
+✔ Make File uploader work @done(25-04-09 22:44)
+✔ Make file parser in Be work @done(25-04-09 22:44)
+✔ Display PersonalPropertySecurities per client @done(25-04-09 22:44)
+✔ Figure out how to turn into microservices @done(25-04-09 22:44)
+✔ Figure out how to dockerise @done(25-04-09 22:44)
+
 ☐ Figure out how to use terraform to create the infrastructure
 ☐ Get AI to write unit tests
 ☐ write github actions to deploy to aws

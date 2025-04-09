@@ -1,5 +1,5 @@
 import { useCallback, DragEventHandler, DragEvent, useMemo } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { FileRejection, useDropzone } from 'react-dropzone';
 import { Button } from './Button';
 import clsx from 'clsx';
 import useIsWindowDragging from '../hooks/useIsWindowDragging';
@@ -7,6 +7,7 @@ import useIsWindowDragging from '../hooks/useIsWindowDragging';
 const FileUpload = ({
   onFileSelected,
   onDrop,
+  onDropRejected,
   isUploading,
 }: FileUploadProps) => {
   const isWindowDragging = useIsWindowDragging();
@@ -29,6 +30,7 @@ const FileUpload = ({
     maxFiles: 1,
     multiple: false,
     disabled: isUploading,
+    onDropRejected,
   });
 
   const rootProps = useMemo(() => getRootProps(), [getRootProps]);
@@ -76,5 +78,6 @@ export default FileUpload;
 interface FileUploadProps {
   onFileSelected?: (file: File) => void;
   onDrop?: DragEventHandler<HTMLElement>;
+  onDropRejected?: (fileRejections: FileRejection[]) => void;
   isUploading?: boolean;
 }

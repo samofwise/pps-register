@@ -4,6 +4,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace PPSRegister.Data.Models;
 
+
 public class PersonalPropertySecurity
 {
   [Key]
