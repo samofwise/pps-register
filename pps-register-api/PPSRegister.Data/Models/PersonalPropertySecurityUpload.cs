@@ -17,7 +17,5 @@ public class PersonalPropertySecurityUpload
     public int? Added { get; set; }
 
     [Required]
-    [ForeignKey(nameof(Client))]
     public int ClientId { get; set; }
-    public Client Client { get; set; } = null!;
 }

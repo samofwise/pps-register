@@ -61,17 +61,20 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
     }
     else
     {
+      uploadRecord.Processed++;
+
       var existingRecord = context.PersonalPropertySecurities.FirstOrDefault(r =>
-      r.GrantorFirstName == record.GrantorFirstName &&
-      r.GrantorLastName == record.GrantorLastName &&
-      r.VIN == record.VIN &&
-      r.SpgAcn == record.SpgAcn &&
-      r.SpgOrganizationName == record.SpgOrganizationName);
+        r.GrantorFirstName == record.GrantorFirstName &&
+        r.GrantorLastName == record.GrantorLastName &&
+        r.VIN == record.VIN &&
+        r.SpgAcn == record.SpgAcn &&
+        r.SpgOrganizationName == record.SpgOrganizationName &&
+        r.ClientId == record.ClientId
+      );
 
       if (existingRecord != null)
       {
         //Skipping GrantorFirstName, GrantorLastName, VIN, SpgAcn, SpgOrganizationName
-        existingRecord.DateRegistered = record.DateRegistered;
         existingRecord.GrantorMiddleNames = record.GrantorMiddleNames;
         existingRecord.RegistrationDuration = record.RegistrationDuration;
         existingRecord.RegistrationStartDate = record.RegistrationStartDate;
@@ -86,7 +89,6 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
       }
     }
 
-    uploadRecord.Processed++;
     context.PersonalPropertySecurityUploads.Update(uploadRecord);
     await context.SaveChangesAsync();
   }
@@ -97,6 +99,7 @@ public class PPSUploadProcessingService(IDbContextFactory<PPSRegisterDbContext> 
     var validationResults = new List<ValidationResult>();
 
     var result = Validator.TryValidateObject(record, validationContext, validationResults, true);
+
     return (result, validationResults);
   }
 

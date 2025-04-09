@@ -1,5 +1,6 @@
 import UploadsList from '../organisms/UploadsList';
 import PersonalSecurityUploader from '../organisms/PersonalSecurityUploader';
+import PersonalPropertySecuritiesList from '../organisms/PersonalPropertySecuritiesList';
 
 const Home = () => {
   return (
@@ -15,6 +16,8 @@ const Home = () => {
       <PersonalSecurityUploader />
 
       <UploadsList className="mt-10" />
+
+      <PersonalPropertySecuritiesList className="mt-10" />
     </article>
   );
 };

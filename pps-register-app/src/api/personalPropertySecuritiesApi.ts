@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import PersonalPropertySecurityUpload from "../models/RegistrationSummary";
+import PersonalPropertySecurityUpload from "../models/PersonalPropertySecurityUploadResponse";
 import api from "./axiosConfig";
 import delay from "delay";
+import PersonalPropertySecurity from "../models/PersonalPropertySecurity";
 
 
 const uploadsKey = 'personalPropertySecurityUploads'
-
+const personalPropertySecuritiesKey = 'personalPropertySecurities'
 const personalPropertySecuritiesApi = {
   useGetUploads: () => useQuery({
     queryKey: [uploadsKey],
@@ -17,6 +18,15 @@ const personalPropertySecuritiesApi = {
     return () => queryClient.invalidateQueries({ queryKey: [uploadsKey] })
   },
 
+  useGetPersonalPropertySecurities: () => useQuery({
+    queryKey: [personalPropertySecuritiesKey],
+    queryFn: getPersonalPropertySecurities
+  }),
+
+  useInvalidatePersonalPropertySecurities: () => {
+    const queryClient = useQueryClient()
+    return () => queryClient.invalidateQueries({ queryKey: [personalPropertySecuritiesKey] })
+  },
 
   useUpload: () => useMutation({
     mutationFn: uploadFile,
@@ -29,6 +39,12 @@ const personalPropertySecuritiesApi = {
 
 const getUploads = async () => {
   const promise = api.get<PersonalPropertySecurityUpload[]>('/personal-property-securities/uploads');
+  const [response] = await Promise.all([promise, delay(300)]);
+  return response.data;
+};
+
+const getPersonalPropertySecurities = async () => {
+  const promise = api.get<PersonalPropertySecurity[]>('/personal-property-securities');
   const [response] = await Promise.all([promise, delay(300)]);
   return response.data;
 };
