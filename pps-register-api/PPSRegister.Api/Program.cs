@@ -2,7 +2,6 @@ using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using PPSRegister.Api.Services;
 using PPSRegister.Data;
-using PPSRegister.PPSUploader.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,14 +22,15 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
-builder.Services.AddDbContext<PPSRegisterDbContext>(options =>
-    options.UseInMemoryDatabase("VehicleRegistrationDb")
-    .UseAsyncSeeding(DatabaseSeeder.Seed)
-    );
+builder.AddSqlServerClient(connectionName: "PPSRegister");
+
+// builder.Services.AddDbContext<PPSRegisterDbContext>(options =>
+//     options.UseInMemoryDatabase("VehicleRegistrationDb")
+//     .UseAsyncSeeding(DatabaseSeeder.Seed)
+//     );
 
 // Add AWS SQS services
 builder.Services.AddAWSService<IAmazonSQS>();
-builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueSettings"));
 
 builder.Services.AddScoped<IPersonalPropertySecurityUploadService, PersonalPropertySecurityUploadService>();
 
