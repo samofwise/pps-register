@@ -2,6 +2,7 @@
   "name": "vehicle-registration",
   "version": "1.0.0",
   "scripts": {
-    "start": "cd pps-register-app && npm start"
+    "start": "cd pps-register-app && npm start",
+    "run-deploy": "act -W .github/workflows/build-deploy-pipeline.yml --secret-file .github/workflows/.secrets"
   }
 }
