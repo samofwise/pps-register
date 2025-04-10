@@ -1,0 +1,82 @@
+name: Build and Deploy to ECR
+
+on:
+  # push:
+    # branches: [ main ]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-southeast-2
+  ECR_REPOSITORY: pps-register
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::904581404707:role/deploy-role
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Build and push API
+    - name: Build and push API image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./pps-register-api/PPSRegister.Api
+        file: ./pps-register-api/PPSRegister.Api/Dockerfile
+        push: true
+        tags: |
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/api:latest
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/api:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    # Build and push Uploader
+    - name: Build and push Uploader image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./pps-register-api
+        file: ./pps-register-api/PPSRegister.PPSUploader/Dockerfile
+        push: true
+        tags: |
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/uploader:latest
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/uploader:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    # Build and push Frontend
+    - name: Build and push Frontend image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./pps-register-app
+        file: ./pps-register-app/Dockerfile
+        push: true
+        tags: |
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/frontend:latest
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/frontend:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Update deployment configuration
+      run: |
+        # Here you can add steps to update your deployment configuration
+        # For example, updating ECS task definitions or Kubernetes manifests
+        echo "Images pushed to ECR successfully"
+
+
