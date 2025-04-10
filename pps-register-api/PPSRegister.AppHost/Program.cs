@@ -6,7 +6,6 @@ var builder = DistributedApplication.CreateBuilder(args);
 var awsRegion = "ap-southeast-2";
 var queueUrl = "https://sqs.ap-southeast-2.amazonaws.com/904581404707/PPSUploaderQueue";
 
-
 var sql = builder.AddSqlServer("sql")
                  .WithLifetime(ContainerLifetime.Persistent);
 
@@ -17,7 +16,8 @@ var uploader = builder.AddProject<Projects.PPSRegister_PPSUploader>("ppsuploader
     .WithReference(db)
     .WaitFor(db)
     .WithEnvironment("AWS__Region", awsRegion)
-    .WithEnvironment("AWS__SQS__QueueUrl", queueUrl);
+    .WithEnvironment("AWS__SQS__QueueUrl", queueUrl)
+    .PublishAsDockerFile();
 
 var api = builder.AddProject<Projects.PPSRegister_Api>("api")
     .WithReference(db)
@@ -25,7 +25,8 @@ var api = builder.AddProject<Projects.PPSRegister_Api>("api")
     .WithReference(uploader)
     .WithHttpsEndpoint(name: "api", port: 4001)
     .WithEnvironment("AWS__Region", awsRegion)
-    .WithEnvironment("AWS__SQS__QueueUrl", queueUrl);
+    .WithEnvironment("AWS__SQS__QueueUrl", queueUrl)
+    .PublishAsDockerFile();
 
 builder.AddNpmApp("vite", "../../pps-register-app", "start")
   .WithReference(api)
