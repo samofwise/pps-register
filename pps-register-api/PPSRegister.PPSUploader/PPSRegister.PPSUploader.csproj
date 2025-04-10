@@ -23,6 +23,7 @@
     <ProjectReference Include="..\PPSRegister.Data\PPSRegister.Data.csproj" />
   </ItemGroup>
 
+  <!-- TODO Possibly Remove this -->
   <ItemGroup>
     <Content Remove="appsettings.json" />
     <Content Remove="appsettings.Development.json" />
