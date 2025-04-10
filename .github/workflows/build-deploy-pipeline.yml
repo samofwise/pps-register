@@ -42,8 +42,8 @@ jobs:
         file: ./pps-register-api/PPSRegister.Api/Dockerfile
         push: true
         tags: |
-          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/api:latest
-          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/api:${{ github.sha }}
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/api/pps-register-api:latest
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/api/pps-register-api:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -55,8 +55,8 @@ jobs:
         file: ./pps-register-api/PPSRegister.PPSUploader/Dockerfile
         push: true
         tags: |
-          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/uploader:latest
-          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/uploader:${{ github.sha }}
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/uploader/pps-register-uploader:latest
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/uploader/pps-register-uploader:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -68,8 +68,8 @@ jobs:
         file: ./pps-register-app/Dockerfile
         push: true
         tags: |
-          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/frontend:latest
-          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/frontend:${{ github.sha }}
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/frontend/pps-register-frontend:latest
+          ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}/frontend/pps-register-frontend:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
