@@ -38,7 +38,7 @@ jobs:
     - name: Build and push API image
       uses: docker/build-push-action@v5
       with:
-        context: ./pps-register-api/PPSRegister.Api
+        context: ./pps-register-api
         file: ./pps-register-api/PPSRegister.Api/Dockerfile
         push: true
         tags: |
