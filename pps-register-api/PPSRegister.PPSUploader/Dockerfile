@@ -5,9 +5,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY ["PPSRegister.PPSUploader/PPSRegister.PPSUploader.csproj", "PPSRegister.PPSUploader/"]
-COPY ["PPSRegister.Data/PPSRegister.Data.csproj", "PPSRegister.Data/"]
-COPY ["PPSRegister.ServiceDefaults/PPSRegister.ServiceDefaults.csproj", "PPSRegister.ServiceDefaults/"]
+COPY ["PPSRegister.PPSUploader.csproj", "./PPSRegister.PPSUploader/"]
+COPY ["../PPSRegister.Data/PPSRegister.Data.csproj", "../PPSRegister.Data/"]
+COPY ["../PPSRegister.ServiceDefaults/PPSRegister.ServiceDefaults.csproj", "../PPSRegister.ServiceDefaults/"]
 RUN dotnet restore "PPSRegister.PPSUploader/PPSRegister.PPSUploader.csproj"
 COPY . .
 WORKDIR "/src/PPSRegister.PPSUploader"
