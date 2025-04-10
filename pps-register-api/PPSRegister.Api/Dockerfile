@@ -5,6 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
+RUN ls -la && ls -la ..
 COPY ["PPSRegister.Api.csproj", "./PPSRegister.Api/"]
 COPY ["../PPSRegister.Data/PPSRegister.Data.csproj", "../PPSRegister.Data/"]
 COPY ["../PPSRegister.ServiceDefaults/PPSRegister.ServiceDefaults.csproj", "../PPSRegister.ServiceDefaults/"]
